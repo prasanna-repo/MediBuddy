@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include
+		resource="org/springframework/boot/logging/logback/console-appender.xml" />
+	<property name="DEV_HOME" value="./logs" />
+
+	<appender name="FILE-AUDIT"
+		class="ch.qos.logback.core.rolling.RollingFileAppender"
+	>
+		<file>${DEV_HOME}/MedibuddyLogger.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"
+		>
+			<charset>UTF-8</charset>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight([%p]) %X{TXNID} - %m%n</Pattern>
+		</encoder>
+
+		<!-- Hourly rollout & Size based rollout -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"
+		>
+			<fileNamePattern>${DEV_HOME}/archived/Medibuddy %d{yyyy-MM-dd}_%i.log
+			</fileNamePattern>
+			<maxFileSize>1MB</maxFileSize>
+			<maxHistory>600</maxHistory>
+			<totalSizeCap>1000MB</totalSizeCap>
+		</rollingPolicy>
+	</appender>
+	<appender name="CONSOLE"
+		class="ch.qos.logback.core.ConsoleAppender"
+	>
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight([%p]) %X{TXNID} - %m%n</Pattern>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE-AUDIT" />
+	</root>
+
+</configuration>
